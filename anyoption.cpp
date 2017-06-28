@@ -61,6 +61,8 @@
 
 #include "anyoption.h"
 
+#include <cstring>
+
 AnyOption::AnyOption()
 {
 	init();
@@ -128,7 +130,7 @@ AnyOption::init(int maxopt, int maxcharopt )
 	hasoptions = false;
 	autousage = false;
 
-	strcpy_s( long_opt_prefix , "--" );
+	strcpy( long_opt_prefix , "--" );
 
 	if( alloc() == false ){
 		cout << endl << "OPTIONS ERROR : Failed allocating memory" ;
@@ -282,7 +284,7 @@ AnyOption::setCommandLongPrefix( char *_prefix )
 		*( _prefix + MAX_LONG_PREFIX_LENGTH ) = '\0'; 
 	}
 
-	strcpy_s (long_opt_prefix,  _prefix);
+	strcpy (long_opt_prefix,  _prefix);
 }
 
 void
@@ -853,7 +855,7 @@ AnyOption::setValue( const char *option , char *value )
                 if( strcmp( options[i], option ) == 0 ){
                         size_t length = (strlen(value)+1)*sizeof(char);
                         values[ optionindex[i] ] = (char*) malloc(length);
-                        strcpy_s( values[ optionindex[i] ], length, value );
+                        strncpy( values[ optionindex[i] ], value, length );
 			return true;
 		}
         }
@@ -869,7 +871,7 @@ AnyOption::setFlagOn( const char *option )
                 if( strcmp( options[i], option ) == 0 ){
                         size_t length = (strlen(TRUE_FLAG)+1)*sizeof(char);
                         values[ optionindex[i] ] = (char*) malloc(length);
-                        strcpy_s( values[ optionindex[i] ], length, TRUE_FLAG );
+                        strncpy( values[ optionindex[i] ], TRUE_FLAG, length );
 			return true;
 		}
         }
@@ -885,7 +887,7 @@ AnyOption::setValue( char option , char *value )
                 if( optionchars[i] == option ){
                         size_t length = (strlen(value)+1)*sizeof(char);
                         values[ optcharindex[i] ] = (char*) malloc(length);
-                        strcpy_s( values[ optcharindex[i] ], length, value );
+                        strncpy( values[ optcharindex[i] ], value, length );
 			return true;
 		}
         }
@@ -901,7 +903,7 @@ AnyOption::setFlagOn( char option )
                 if( optionchars[i] == option ){
                         size_t length = (strlen(TRUE_FLAG)+1)*sizeof(char);
                         values[ optcharindex[i] ] = (char*) malloc(length);
-			strcpy_s( values[ optcharindex[i] ] , length, TRUE_FLAG );
+			strncpy( values[ optcharindex[i] ] , TRUE_FLAG, length );
 			return true;
 		}
         }
